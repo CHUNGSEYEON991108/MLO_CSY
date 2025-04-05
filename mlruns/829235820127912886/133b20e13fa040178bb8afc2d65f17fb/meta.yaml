@@ -1,0 +1,15 @@
+artifact_uri: file:C:/Users/정세연/Desktop/CURSOR/MLO_CSY/mlruns/829235820127912886/133b20e13fa040178bb8afc2d65f17fb/artifacts
+end_time: 1743862340034
+entry_point_name: ''
+experiment_id: '829235820127912886'
+lifecycle_stage: active
+run_id: 133b20e13fa040178bb8afc2d65f17fb
+run_name: mercurial-jay-919
+run_uuid: 133b20e13fa040178bb8afc2d65f17fb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1743862340002
+status: 3
+tags: []
+user_id: 정세연

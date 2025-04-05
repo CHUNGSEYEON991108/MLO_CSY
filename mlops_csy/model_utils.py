@@ -5,6 +5,7 @@ from sklearn.ensemble import RandomForestClassifier, VotingClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
+from sklearn.preprocessing import StandardScaler
 
 def train_model(df, target_col='채무 불이행 여부'):
     # 특징(X)과 목표 변수(y) 정의
@@ -15,27 +16,37 @@ def train_model(df, target_col='채무 불이행 여부'):
     for col in X.select_dtypes(include='object').columns:
         X[col] = X[col].astype('category').cat.codes  # 범주형 데이터를 코드로 변환
 
+    # 수치형 변수 스케일링 추가
+    scaler = StandardScaler()
+    numeric_columns = X.select_dtypes(include=['float64', 'int64']).columns
+    X[numeric_columns] = scaler.fit_transform(X[numeric_columns])
+
     # 학습 데이터와 검증 데이터로 나누기
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    # 개별 모델 정의 (병렬 처리 활성화)
+    # 개별 모델 정의 (성능 개선을 위한 하이퍼파라미터 조정)
     rf_model = RandomForestClassifier(
-        n_estimators=50,  # 트리 수 감소
-        max_depth=10,     # 트리 깊이 제한
-        n_jobs=-1,        # 모든 CPU 코어 사용
+        n_estimators=100,    # 트리 수 증가
+        max_depth=15,        # 트리 깊이 증가
+        min_samples_split=5, # 분할을 위한 최소 샘플 수
+        min_samples_leaf=2,  # 리프 노드의 최소 샘플 수
+        n_jobs=-1,          # 모든 CPU 코어 사용
         random_state=42
     )
+    
     lr_model = LogisticRegression(
-        max_iter=500,     # 반복 횟수 감소
-        n_jobs=-1,        # 모든 CPU 코어 사용
+        C=0.1,              # 규제 강도 조정
+        max_iter=1000,      # 최대 반복 횟수
+        class_weight='balanced', # 클래스 불균형 처리
+        n_jobs=-1,          # 모든 CPU 코어 사용
         random_state=42
     )
 
     # 앙상블 모델 (VotingClassifier)
     ensemble_model = VotingClassifier(
         estimators=[('rf', rf_model), ('lr', lr_model)],
-        voting='soft',  # 'hard'에서 'soft'로 변경
-        n_jobs=-1  # 병렬 처리 활성화
+        voting='soft',  # 확률 기반 투표 방식 사용
+        n_jobs=-1      # 병렬 처리 활성화
     )
 
     # 모델 학습

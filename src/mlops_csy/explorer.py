@@ -1,8 +1,25 @@
-# mlops_csy/explorer.py
-def explore_data(df):
-    print("\n📦 데이터 크기:", df.shape)
-    print("\n🧾 컬럼 목록:", df.columns.tolist())
-    print("\n🧪 컬럼별 데이터 타입:\n", df.dtypes)
-    print("\n❌ 결측치 수:\n", df.isnull().sum())
-    print("\n📊 수치형 통계 요약:\n", df.describe())
-    print("\n🧩 범주형 통계 요약:\n", df.describe(include='object'))
+import pandas as pd
+import numpy as np
+
+def explore_data(data):
+    """
+    Perform exploratory data analysis
+    
+    Args:
+        data (pandas.DataFrame): Input data
+        
+    Returns:
+        dict: Dictionary containing analysis results
+    """
+    analysis = {
+        'shape': data.shape,
+        'columns': list(data.columns),
+        'missing_values': data.isnull().sum().to_dict(),
+        'numeric_summary': data.describe().to_dict(),
+        'categorical_summary': {
+            col: data[col].value_counts().to_dict()
+            for col in data.select_dtypes(include=['object']).columns
+        }
+    }
+    
+    return analysis 

@@ -1,24 +1,30 @@
-# mlops_csy/visualizer.py
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-plt.rcParams['font.family'] = 'Malgun Gothic'
-plt.rcParams['axes.unicode_minus'] = False
-
-def count_unique_values(df, col):
-    print(f"\n🔹 '{col}' 고유값 분포:")
-    print(df[col].value_counts())
-    sns.countplot(data=df, x=col, order=df[col].value_counts().index)
-    plt.title(f"{col} 분포")
-    plt.xticks(rotation=45)
+def visualize_data(data, save_path=None):
+    """
+    Create visualizations for the data
+    
+    Args:
+        data (pandas.DataFrame): Input data
+        save_path (str, optional): Path to save the visualizations
+    """
+    # Set up the matplotlib figure
+    plt.figure(figsize=(15, 10))
+    
+    # Create subplots for numeric columns
+    numeric_cols = data.select_dtypes(include=['int64', 'float64']).columns
+    n_cols = len(numeric_cols)
+    
+    for i, col in enumerate(numeric_cols, 1):
+        plt.subplot(2, (n_cols + 1) // 2, i)
+        sns.histplot(data[col], kde=True)
+        plt.title(f'Distribution of {col}')
+        plt.xticks(rotation=45)
+    
     plt.tight_layout()
-    plt.show()
-
-def plot_distribution(df, col):
-    print(f"\n📈 '{col}' 수치 분포:")
-    sns.histplot(df[col].dropna(), bins=30, kde=True)
-    plt.title(f"{col} 분포")
-    plt.xlabel(col)
-    plt.ylabel('빈도수')
-    plt.tight_layout()
-    plt.show()
+    
+    if save_path:
+        plt.savefig(save_path)
+    
+    plt.close() 

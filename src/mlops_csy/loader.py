@@ -1,11 +1,22 @@
-# mlops_csy/loader.py
 import pandas as pd
 
-def load_data(path='./data/train.csv'):
+def load_data(file_path):
+    """
+    Load data from a CSV file
+    
+    Args:
+        file_path (str): Path to the CSV file
+        
+    Returns:
+        pandas.DataFrame: Loaded data
+        
+    Raises:
+        FileNotFoundError: If the file does not exist
+    """
     try:
-        df = pd.read_csv(path)
-        print("✅ 데이터 로딩 완료!")
-        return df
+        data = pd.read_csv(file_path)
+        return data
     except FileNotFoundError:
-        print(f"❌ 파일을 찾을 수 없습니다: {path}")
-        raise
+        raise FileNotFoundError(f"File not found: {file_path}")
+    except Exception as e:
+        raise Exception(f"Error loading data: {str(e)}") 

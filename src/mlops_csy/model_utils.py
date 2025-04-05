@@ -182,9 +182,9 @@ def predict_and_save(model, test_data, output_path):
     
     submission = pd.DataFrame({
         'UID': test_data['UID'],
-        '채무 불이행 확률': y_pred_proba
+        '채무불이행확률': y_pred_proba
     })
-    submission.to_csv(versioned_path, index=False)
+    submission.to_csv(versioned_path, index=False, encoding='utf-8-sig')
     
     # MLflow에 예측 결과 저장
     with mlflow.start_run(nested=True):

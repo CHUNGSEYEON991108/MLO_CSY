@@ -6,6 +6,7 @@ from mlops_csy.loader import load_data
 from mlops_csy.explorer import explore_data
 from mlops_csy.visualizer import count_unique_values, plot_distribution
 from mlops_csy.model_utils import train_model, predict_and_save
+from datetime import datetime
 
 def main():
     """메인 실행 함수"""
@@ -45,11 +46,20 @@ def main():
     if not args.skip_eda:
         print("\n📈 데이터 탐색 분석 수행 중...")
         explore_data(train_df)
-        count_unique_values(train_df, '대출 목적')
-        plot_distribution(train_df, '연간 소득')
+        
+        # 대출 목적 분포 저장
+        version = datetime.now().strftime("%Y%m%d_%H%M")
+        purpose_plot_path = os.path.join(args.output_dir, f'loan_purpose_distribution_v{version}.png')
+        count_unique_values(train_df, '대출 목적', save_path=purpose_plot_path)
+        print(f"대출 목적 분포 그래프가 {purpose_plot_path}에 저장되었습니다.")
+        
+        # 연간 소득 분포 저장
+        income_plot_path = os.path.join(args.output_dir, f'annual_income_distribution_v{version}.png')
+        plot_distribution(train_df, '연간 소득', save_path=income_plot_path)
+        print(f"연간 소득 분포 그래프가 {income_plot_path}에 저장되었습니다.")
     
     # 모델 학습
-    model = train_model(train_df)
+    model = train_model(train_df, output_dir=args.output_dir)
     
     # 예측 및 저장
     submission_path = os.path.join(args.output_dir, 'submission.csv')

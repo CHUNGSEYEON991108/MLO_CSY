@@ -1,0 +1,15 @@
+artifact_uri: file:C:/Users/정세연/Desktop/CURSOR/MLO_CSY/mlruns/829235820127912886/f2742ce06e204745a109a7d6ed992dfb/artifacts
+end_time: 1743862535731
+entry_point_name: ''
+experiment_id: '829235820127912886'
+lifecycle_stage: active
+run_id: f2742ce06e204745a109a7d6ed992dfb
+run_name: useful-foal-290
+run_uuid: f2742ce06e204745a109a7d6ed992dfb
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1743862535696
+status: 3
+tags: []
+user_id: 정세연

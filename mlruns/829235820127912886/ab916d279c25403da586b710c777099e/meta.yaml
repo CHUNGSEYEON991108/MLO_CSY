@@ -1,0 +1,15 @@
+artifact_uri: file:C:/Users/정세연/Desktop/CURSOR/MLO_CSY/mlruns/829235820127912886/ab916d279c25403da586b710c777099e/artifacts
+end_time: 1743862703319
+entry_point_name: ''
+experiment_id: '829235820127912886'
+lifecycle_stage: active
+run_id: ab916d279c25403da586b710c777099e
+run_name: nosy-yak-724
+run_uuid: ab916d279c25403da586b710c777099e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1743862703288
+status: 3
+tags: []
+user_id: 정세연
